@@ -27,6 +27,8 @@ public class Word {
     /** Miwok translation for the word */
     private String mMiwokTranslation;
 
+    private int mImageResourceId;
+
     /**
      * Create a new Word object.
      *

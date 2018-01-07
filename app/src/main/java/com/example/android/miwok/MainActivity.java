@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 /*
 * TODO:
-* https://classroom.udacity.com/courses/ud839/lessons/7904501104/concepts/79377590260923
+* https://classroom.udacity.com/courses/ud839/lessons/7904501104/concepts/79377590290923
 * */
 
 public class MainActivity extends AppCompatActivity {
