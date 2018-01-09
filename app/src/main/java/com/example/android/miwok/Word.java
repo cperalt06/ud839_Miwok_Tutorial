@@ -70,4 +70,10 @@ public class Word {
         return mMiwokTranslation;
     }
 
+    /**
+     * Get the image associated with the word.
+     */
+    public int getmImageResourceId() {
+        return mImageResourceId;
+    }
 }
