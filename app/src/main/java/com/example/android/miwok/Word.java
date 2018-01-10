@@ -73,7 +73,7 @@ public class Word {
     /**
      * Get the image associated with the word.
      */
-    public int getmImageResourceId() {
+    public int getImageResourceId() {
         return mImageResourceId;
     }
 }
