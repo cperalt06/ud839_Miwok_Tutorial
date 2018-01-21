@@ -14,6 +14,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class WordAdapter extends ArrayAdapter<Word>{
+
+    /* Resource ID for the background color for the list of words. */
     private int mBackgroundColor;
 
     public WordAdapter(@NonNull Context context, ArrayList<Word> words, int backgroundColor) {
@@ -56,8 +58,11 @@ public class WordAdapter extends ArrayAdapter<Word>{
             iconView.setVisibility(View.GONE);
         }
 
+        // Set the theme color for the list item.
         View list_background = listItemView.findViewById(R.id.list_background);
+        // Find the color that the resource ID maps to.
         int color = ContextCompat.getColor(getContext(), mBackgroundColor);
+        // Set the background color of the text container view.
         list_background.setBackgroundColor(color);
 
         return listItemView;
