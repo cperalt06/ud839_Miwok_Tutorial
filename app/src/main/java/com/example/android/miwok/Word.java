@@ -33,6 +33,9 @@ public class Word {
     /** Check to see if there is an image resource **/
     private boolean mHasImage;
 
+    /** Audio file with the Miwok Translation of the word*/
+    private int mAudioResource;
+
     /**
      * Create a new Word object.
      *
@@ -62,6 +65,25 @@ public class Word {
     }
 
     /**
+     * Create a new Word object.
+     *
+     * @param defaultTranslation is the word in a language that the user is already familiar with
+     *                           (such as English)
+     * @param miwokTranslation is the word in the Miwok language
+     * @param imageResourceId is the drawable resource ID for image associated with it
+     * @param audioResource is raw resource with the audio associated with it
+     */
+    public Word(String defaultTranslation, String miwokTranslation, int imageResourceId, int
+            audioResource) {
+        mDefaultTranslation = defaultTranslation;
+        mMiwokTranslation = miwokTranslation;
+        mImageResourceId = imageResourceId;
+        mHasImage = true;
+        mAudioResource = audioResource;
+    }
+
+
+    /**
      * Get the default translation of the word.
      */
     public String getDefaultTranslation() {
@@ -87,5 +109,12 @@ public class Word {
      */
     public boolean getHasImage() {
         return mHasImage;
+    }
+
+    /**
+     * Gets the audio file for this word.
+     */
+    public int getAudioResource() {
+        return mAudioResource;
     }
 }
