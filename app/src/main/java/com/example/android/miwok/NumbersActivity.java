@@ -37,12 +37,6 @@ public class NumbersActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        releaseMediaPlayer();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         releaseMediaPlayer();
