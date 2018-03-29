@@ -15,6 +15,8 @@
  */
 package com.example.android.miwok;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 public class PhrasesActivity extends AppCompatActivity {
 
     private MediaPlayer mMediaPlayer;
+    private AudioManager mAudioManager;
 
     private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
         @Override
@@ -46,6 +49,8 @@ public class PhrasesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
+
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         // Create a list of words
         final ArrayList<Word> words = new ArrayList<Word>();
@@ -77,10 +82,18 @@ public class PhrasesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 releaseMediaPlayer();
-                mMediaPlayer = MediaPlayer.create(PhrasesActivity.this, words.get(i).getAudioResource());
-                mMediaPlayer.start();
+                Word word = words.get(i);
 
-                mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                // Request audio focus for playback
+                int result = mAudioManager.requestAudioFocus(afChangeListener, AudioManager.STREAM_MUSIC,
+                        AudioManager.AUDIOFOCUS_GAIN);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    // Start playback.
+                    mMediaPlayer = MediaPlayer.create(PhrasesActivity.this, word.getAudioResource());
+                    mMediaPlayer.start();
+                    mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                }
             }
         });
     }
@@ -99,6 +112,47 @@ public class PhrasesActivity extends AppCompatActivity {
             // setting the media player to null is an easy way to tell that the media player
             // is not configured to play an audio file at the moment.
             mMediaPlayer = null;
+
+            mAudioManager.abandonAudioFocus(afChangeListener);
         }
     }
+
+    AudioManager.OnAudioFocusChangeListener afChangeListener =
+            new AudioManager.OnAudioFocusChangeListener() {
+                public void onAudioFocusChange(int focusChange) {
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+                        // Pause playback because your Audio Focus was
+                        // temporarily stolen, but will be back soon.
+                        // i.e. for a phone call
+                        mMediaPlayer.pause();
+                        mMediaPlayer.seekTo(0);
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                        // Stop playback, because you lost the Audio Focus.
+                        // i.e. the user started some other playback app
+                        // Remember to unregister your controls/buttons here.
+                        // And release the kra — Audio Focus!
+                        // You’re done.
+                        mMediaPlayer.stop();
+                        releaseMediaPlayer();
+//                        mAudioManager.abandonAudioFocus(afChangeListener);
+                    } else if (focusChange ==
+                            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                        // Lower the volume, because something else is also
+                        // playing audio over you.
+                        // i.e. for notifications or navigation directions
+                        // Depending on your audio playback, you may prefer to
+                        // pause playback here instead. You do you.
+                        mMediaPlayer.pause();
+                        mMediaPlayer.seekTo(0);
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                        // Resume playback, because you hold the Audio Focus
+                        // again!
+                        // i.e. the phone call ended or the nav directions
+                        // are finished
+                        // If you implement ducking and lower the volume, be
+                        // sure to return it to normal here, as well.
+                        mMediaPlayer.start();
+                    }
+                }
+            };
 }
