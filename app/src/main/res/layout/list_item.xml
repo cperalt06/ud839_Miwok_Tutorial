@@ -14,14 +14,14 @@
      limitations under the License.
 -->
 <!-- Layout for a single list item -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:minHeight="@dimen/list_item_height"
-              android:background="@color/tan_background"
-              android:orientation="horizontal">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/tan_background"
+                android:minHeight="@dimen/list_item_height"
+                android:orientation="horizontal">
 
 
     <ImageView
@@ -33,10 +33,14 @@
     <LinearLayout
         android:id="@+id/list_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/image"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingLeft="16dp">
 
         <TextView
             android:id="@+id/miwok_text_view"
@@ -44,8 +48,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="bottom"
-            android:textColor="@android:color/white"
             android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             tools:text="lutti"/>
 
@@ -55,9 +59,19 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="top"
-            android:textColor="@android:color/white"
             android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@android:color/white"
             tools:text="one"/>
+
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        app:srcCompat="@drawable/ic_play_arrow_white_24dp"/>
+
+</RelativeLayout>
